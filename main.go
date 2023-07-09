@@ -4,14 +4,30 @@ import (
     "fmt"
     "flag"
     "strconv"
+    "regexp"
     "os"
     "os/exec"
+
+    "github.com/luckylat/cp-template/srcModify"
 )
 
 func check(e error){
     if e != nil {
         panic(e)
     }
+}
+
+func toLine (s string) []string {
+    re := regexp.MustCompile(`\n`)
+    return re.Split(s, -1)
+}
+
+func toOneline (src []string) string {
+    var ret string
+    for _, line := range src {
+        ret = ret + line + "\n"
+    }
+    return ret
 }
 
 //arg[0] = Folder Name
@@ -29,7 +45,11 @@ func main(){
     //oj-bundle 
     templatePath := os.Getenv("CP_Template")
     lawTemplate, err := exec.Command("oj-bundle", templatePath).Output()
-    template := string(lawTemplate)
+
+
+    eachlineTemplate := toLine(string(lawTemplate))
+    modifyTemplate := srcmodify.DeleteLine(eachlineTemplate)
+    template := toOneline(modifyTemplate)
     check(err)
 
     err = os.Mkdir(arg[0], 0755)
