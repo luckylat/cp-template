@@ -3,7 +3,6 @@ package main
 import (
     "fmt"
     "flag"
-    "strconv"
     "regexp"
     "os"
     "os/exec"
@@ -33,11 +32,25 @@ func toOneline (src []string) string {
 //arg[0] = Folder Name
 //arg[1] = File Number (A.cpp ... X.cpp)
 func main(){
+    flag.CommandLine.Usage = func() {
+        o := flag.CommandLine.Output()
+        fmt.Fprintf(o, "\nUsage: %s\n", flag.CommandLine.Name())
+        fmt.Fprintf(o, "cp-template --folder `FolderName` --number `Number of Problems`\n")
+
+    }
+
+    var (
+        folder string
+        problemNumber int
+    )
+    //enhance: set short alias command !/w duplicate command name
+    flag.StringVar(&folder, "folder", "", "Folder Name")
+    flag.IntVar(&problemNumber, "number", 0, "Problem Number")
+
     flag.Parse()
-    arg := flag.Args()
-    
-    if len(arg) != 2 {
-        fmt.Println("Missing Arguments. Example: cp-template `FolderName` `Number of Problems`")
+
+    if folder == "" || problemNumber == 0 {
+        fmt.Println("Missing Arguments. Example: cp-template --folder `FolderName` --number `Number of Problems`")
         os.Exit(1)
     }
 
@@ -52,14 +65,13 @@ func main(){
     template := toOneline(modifyTemplate)
     check(err)
 
-    err = os.Mkdir(arg[0], 0755)
+    err = os.Mkdir(folder, 0755)
     check(err)
 
-    fileNum, err := strconv.Atoi(arg[1])
     check(err)
     fileName := 'A'
-    for i := 0; fileNum > i; i++ {
-        file, err := os.Create(arg[0] + "/" + string(fileName) + ".cpp")
+    for i := 0; problemNumber > i; i++ {
+        file, err := os.Create(folder + "/" + string(fileName) + ".cpp")
         check(err)
         file.WriteString(template)
         file.Close()
