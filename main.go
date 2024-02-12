@@ -36,7 +36,8 @@ func main(){
     flag.CommandLine.Usage = func() {
         o := flag.CommandLine.Output()
         fmt.Fprintf(o, "\nUsage: %s\n", flag.CommandLine.Name())
-        fmt.Fprintf(o, "cp-template --folder `FolderName` --number `Number of Problems`\n")
+        fmt.Fprintf(o, "cp-template --folder `FolderName` --number `Number of Problems` (--style `TemplateStyle`)\n")
+        fmt.Fprintf(o, "docs: https://github.com/luckylat/cp-template/blob/main/README.md#how-to-use")
 
     }
 
@@ -53,7 +54,8 @@ func main(){
     flag.Parse()
 
     if folder == "" || problemNumber == 0 {
-        fmt.Println("Missing Arguments. Example: cp-template --folder `FolderName` --number `Number of Problems`")
+        fmt.Println("Missing Arguments. Example: cp-template --folder `FolderName` --number `Number of Problems` (--style `TemplateStyle`)")
+        fmt.Println("docs: https://github.com/luckylat/cp-template/blob/main/README.md#how-to-use")
         os.Exit(1)
     }
 
