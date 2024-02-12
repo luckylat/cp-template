@@ -8,6 +8,7 @@ import (
     "os/exec"
 
     "github.com/luckylat/cp-template/srcModify"
+    "github.com/luckylat/cp-template/readConfig"
 )
 
 func check(e error){
@@ -42,10 +43,12 @@ func main(){
     var (
         folder string
         problemNumber int
+        templateStyle string
     )
     //enhance: set short alias command !/w duplicate command name
     flag.StringVar(&folder, "folder", "", "Folder Name")
     flag.IntVar(&problemNumber, "number", 0, "Problem Number")
+    flag.StringVar(&templateStyle, "style", "default", "Template Style")
 
     flag.Parse()
 
@@ -56,7 +59,8 @@ func main(){
 
     //get template file
     //oj-bundle 
-    templatePath := os.Getenv("CP_Template")
+    templatePath, err := readConfig.GetTemplatePath(templateStyle)
+    check(err)
     lawTemplate, err := exec.Command("oj-bundle", templatePath).Output()
 
 
