@@ -19,13 +19,25 @@ Set environment file `$XDG_CONFIG_HOME/cp-template/settings.toml` or `$HOME/.con
 ```
 
 ### 2. Execute Command
-```
-$ cp-template --folder `FolderName` --number `Number of Problems` (--style "StyleName")
+```sh
+$ cp-template --folder `FolderName` --number `Number of Problems` (--style `StyleName`)
 ```
 
-**Example**
+#### Example
+```sh
+$ cp-template --folder ABC336 --number 7
 ```
-$ cp-template ABC336 7
+
+##### Example /w StyleName
+
+```toml
+[templates]
+    default = "A filepath"
+    query = "Other filepath"
+```
+
+```sh
+$ cp-template --folder CF1928 --number 6 --style query
 ```
 
 ## To be
