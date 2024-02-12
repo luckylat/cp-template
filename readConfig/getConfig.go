@@ -3,7 +3,6 @@ package readConfig
 import (
 	"fmt"
 	"os"
-	"reflect"
 
 	"github.com/BurntSushi/toml"
 )
